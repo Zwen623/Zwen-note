@@ -1,0 +1,87 @@
+package com.zwen.ipet.wms.dao.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.zwen.ipet.common.util.DateProvider;
+import com.zwen.ipet.wms.dao.ReturnGoodsInputOrderDAO;
+import com.zwen.ipet.wms.domain.ReturnGoodsInputOrderDO;
+import com.zwen.ipet.wms.domain.ReturnGoodsInputOrderQuery;
+import com.zwen.ipet.wms.mapper.ReturnGoodsInputOrderMapper;
+
+/**
+ * 退货入库单管理DAO组件
+ * @author zwen
+ *
+ */
+@Repository
+public class ReturnGoodsInputOrderDAOImpl implements ReturnGoodsInputOrderDAO {
+
+	/**
+	 * 退货入库单管理mapper组件
+	 */
+	@Autowired
+	private ReturnGoodsInputOrderMapper returnGoodsInputOrderMapper;
+	/**
+	 * 日期辅助组件
+	 */
+	@Autowired
+	private DateProvider dateProvider;
+	
+	/**
+	 * 新增退货入库单
+	 * @param returnGoodsInputOrder 退货入库单
+	 */
+	@Override
+	public Long save(ReturnGoodsInputOrderDO returnGoodsInputOrder) throws Exception {
+		returnGoodsInputOrderMapper.save(returnGoodsInputOrder); 
+		return returnGoodsInputOrder.getId();
+	}
+	
+	/**
+	 * 分页查询退货入库单
+	 * @param query 查询条件
+	 * @return 退货入库单
+	 */
+	@Override
+	public List<ReturnGoodsInputOrderDO> listByPage(
+			ReturnGoodsInputOrderQuery query) throws Exception {
+		return returnGoodsInputOrderMapper.listByPage(query);
+	}
+	
+	/**
+	 * 根据id查询退后入库单
+	 * @param id 退货入库单id
+	 * @return 退后入库单
+	 */
+	@Override
+	public ReturnGoodsInputOrderDO getById(Long id) throws Exception {
+		return returnGoodsInputOrderMapper.getById(id);
+	}
+	
+	/**
+	 * 更新退货入库单
+	 * @param returnGoodsInputOrder 退货入库单
+	 */
+	@Override
+	public void update(ReturnGoodsInputOrderDO returnGoodsInputOrder) throws Exception {
+		returnGoodsInputOrder.setGmtModified(dateProvider.getCurrentTime());
+		returnGoodsInputOrderMapper.update(returnGoodsInputOrder); 
+	}
+	
+	/**
+	 * 更新退货入库单的状态
+	 * @param id 退货入库单id 
+	 * @param status 退货入库单状态
+	 * @throws Exception
+	 */
+	@Override
+	public void updateStatus(Long id, Integer status) throws Exception {
+		ReturnGoodsInputOrderDO returnGoodsInputOrder = getById(id);
+		returnGoodsInputOrder.setStatus(status); 
+		update(returnGoodsInputOrder);
+	}
+	 
+}

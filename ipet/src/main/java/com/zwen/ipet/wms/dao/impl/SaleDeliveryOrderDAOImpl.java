@@ -1,0 +1,83 @@
+package com.zwen.ipet.wms.dao.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.zwen.ipet.common.util.DateProvider;
+import com.zwen.ipet.wms.dao.SaleDeliveryOrderDAO;
+import com.zwen.ipet.wms.domain.SaleDeliveryOrderDO;
+import com.zwen.ipet.wms.domain.SaleDeliveryOrderQuery;
+import com.zwen.ipet.wms.mapper.SaleDeliveryOrderMapper;
+
+/**
+ * 销售出库单管理DAO组件
+ * @author zwen
+ *
+ */
+@Repository
+public class SaleDeliveryOrderDAOImpl implements SaleDeliveryOrderDAO {
+	
+	/**
+	 * 销售出库单管理mapper组件
+	 */
+	@Autowired
+	private SaleDeliveryOrderMapper saleDeliveryOrderMapper;
+	/**
+	 * 日期辅助组件
+	 */
+	@Autowired
+	private DateProvider dateProvider;
+	
+	/**
+	 * 新增销售出库单
+	 * @param saleDeliveryOrder
+	 */
+	@Override
+	public Long save(SaleDeliveryOrderDO saleDeliveryOrder) throws Exception {
+		saleDeliveryOrderMapper.save(saleDeliveryOrder); 
+		return saleDeliveryOrder.getId();
+	}
+	
+	/**
+	 * 分页查询销售出库单
+	 * @param query 查询条件
+	 * @return 销售出库单
+	 */
+	@Override
+	public List<SaleDeliveryOrderDO> listByPage(SaleDeliveryOrderQuery query) throws Exception {
+		return saleDeliveryOrderMapper.listByPage(query);
+	}
+	
+	/**
+	 * 根据id查询销售出库单
+	 * @param id 销售出库单id
+	 * @return 销售出库单
+	 */
+	@Override
+	public SaleDeliveryOrderDO getById(Long id) throws Exception {
+		return saleDeliveryOrderMapper.getById(id);
+	}
+	
+	/**
+	 * 根据id查询销售出库单
+	 * @param id 销售出库单id
+	 * @return 销售出库单
+	 */
+	@Override
+	public SaleDeliveryOrderDO getByOrderId(Long orderId) throws Exception {
+		return saleDeliveryOrderMapper.getByOrderId(orderId);
+	}
+	
+	/**
+	 * 更新销售出库单
+	 * @param saleDeliveryOrder 销售出库单
+	 */
+	@Override
+	public void update(SaleDeliveryOrderDO saleDeliveryOrder) throws Exception {
+		saleDeliveryOrder.setGmtModified(dateProvider.getCurrentTime());
+		saleDeliveryOrderMapper.update(saleDeliveryOrder); 
+	}
+	
+}
